@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url('photos/images/35.jpg') center center/cover no-repeat;
+            background-size: cover;
+            background-position: center 50%;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 50% 0%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            75% {
+                background-position: 50% 100%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .celebration-btn {
+            background: transparent;
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            padding: 30px 60px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4), 0 0 30px rgba(255, 105, 180, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: bounceIn 1.5s ease-out, pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .celebration-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .celebration-btn:hover {
+            transform: translateY(-8px) scale(1.08);
+            box-shadow: 0 25px 60px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 105, 180, 0.5);
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .celebration-btn:hover::before {
+            left: 100%;
+        }
+
+        .celebration-btn:active {
+            transform: translateY(-3px) scale(1.03);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4), 0 0 30px rgba(255, 105, 180, 0.3);
+            }
+            50% {
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6), 0 0 50px rgba(255, 105, 180, 0.5);
+            }
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: fixed;
+            color: rgba(255, 105, 180, 0.8);
+            animation: floatHeart 6s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .celebration-btn {
+                padding: 20px 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .celebration-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="celebration-btn" onclick="openBirthdayCelebration()">
+            Birthday Celebration 
+        </button>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="song/music/song.mp4" type="audio/mp4">
+        <source src="song/music/song.mp4" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Open birthday celebration page
+        function openBirthdayCelebration() {
+            const music = document.getElementById('backgroundMusic');
+            music.volume = 0.8;
+            music.play().catch(function(error) {
+                console.log("Music play failed:", error);
+            });
+            
+            // Save music state in sessionStorage
+            sessionStorage.setItem('musicPlaying', 'true');
+            sessionStorage.setItem('musicCurrentTime', music.currentTime);
+            
+            setTimeout(() => {
+                window.location.href = 'birthday.html';
+            }, 100);
+        }
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = ['❤️', '💕', '💖', '💗', '💝'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            document.body.appendChild(heart);
+            
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 800);
+
+        // Create initial hearts
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createHeart, i * 200);
+        }
+    </script>
+</body>
+</html>
